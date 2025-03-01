@@ -93,15 +93,18 @@ public class ClienteDAO {
         return cliente;
     }
 
-    public void delete(Connection connection, Integer codigo) throws SQLException {
+    public Cliente delete(Connection connection, Cliente cliente) throws SQLException {
 
         String comandoSQL = "delete from cliente where codigo = ?";
 
         PreparedStatement ps = connection.prepareStatement(comandoSQL);
 
-        ps.setInt(1, codigo);
+        ps.setInt(1, cliente.getCodigo());
+
 
         ps.execute();
+
+        return cliente;
     }
 
     private Cliente extracted(ResultSet rs) throws SQLException {

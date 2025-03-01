@@ -2,13 +2,37 @@ package br.com.fuctura.entity;
 
 import java.time.Instant;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name  = "venda")
 public class Venda {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 
+    @OneToOne
+    @JoinColumn(name = "codigo_veiculo")
     private Veiculo codVeiculo;
+
+    @OneToOne
+    @JoinColumn(name = "codigo_vendedor")
     private Vendedor codVendedor;
+    
+    @OneToOne
+    @JoinColumn(name = "codigo_cliente")
     private Cliente codCliente;
+
+    @ManyToOne
+    @JoinColumn(name = "codigo_loja")
     private Loja codLoja;
 
     private Double valor;
@@ -85,4 +109,10 @@ public class Venda {
         this.dhVenda = dhVenda;
     }
 
+
+    @Override
+    public String toString() {
+        return "Venda [codigo=" + codigo + ", codVeiculo=" + codVeiculo + ", codVendedor=" + codVendedor + ", codCliente="
+                + codCliente + ", codLoja=" + codLoja + ", valor=" + valor + ", dhVenda=" + dhVenda + "]";
+    }
 }

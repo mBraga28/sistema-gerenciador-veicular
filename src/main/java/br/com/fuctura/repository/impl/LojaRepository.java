@@ -2,6 +2,7 @@ package br.com.fuctura.repository.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import br.com.fuctura.dao.LojaDAO;
@@ -24,6 +25,26 @@ public class LojaRepository implements ILojaRepository {
     @Override
     public Optional<Loja> findById(Connection connection, Integer codigo) throws SQLException {
         return lojaDAO.findById(connection, codigo);
+    }
+
+    @Override
+    public Optional<Loja> findByNome(Connection connection, String nome) throws SQLException {
+        return lojaDAO.findByNome(connection, nome);
+    }
+
+    @Override
+    public Loja update(Connection connection, Loja loja) throws SQLException {
+        return lojaDAO.update(connection, loja);
+    }
+
+    @Override
+    public Loja delete(Connection connection, Loja loja) throws SQLException {
+        return lojaDAO.delete(connection, loja);
+    }
+
+    @Override
+    public Optional<List<Loja>> findAll(Connection connection) throws SQLException {
+        return lojaDAO.findAll(connection);
     }
 
 }

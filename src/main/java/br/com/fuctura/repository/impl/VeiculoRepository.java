@@ -27,4 +27,19 @@ public class VeiculoRepository implements IVeiculoRepository {
 	public Optional<List<Veiculo>> findAll(Connection connection) throws SQLException {
 		return veiculoDAO.findAll(connection);
 	}
+
+	@Override
+	public Optional<Veiculo> findByPlaca(Connection connection, String placa) throws SQLException {
+		return veiculoDAO.findByPlaca(connection, placa);
+	}
+
+	@Override
+	public Veiculo update(Connection connection, Veiculo veiculo) throws SQLException {
+		return veiculoDAO.update(connection, veiculo);
+	}
+
+	@Override
+	public Veiculo delete(Connection connection, Veiculo veiculo) throws SQLException {
+		return veiculoDAO.delete(connection, veiculo);
+	}
 }

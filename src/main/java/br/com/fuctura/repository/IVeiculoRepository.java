@@ -12,5 +12,8 @@ public interface IVeiculoRepository {
     // Optional<Veiculo> findById(Connection connection, Integer codigo)  throws SQLException;
     Veiculo save(Connection connection, Veiculo veiculo) throws SQLException;
     Optional<List<Veiculo>> findAll(Connection connection) throws SQLException; //List
+    Optional<Veiculo> findByPlaca(Connection connection, String placa) throws SQLException;
+    Veiculo update(Connection connection, Veiculo veiculo) throws SQLException;
+    Veiculo delete(Connection connection, Veiculo veiculo) throws SQLException;
 
 }

@@ -1,12 +1,20 @@
 package br.com.fuctura.entity;
 
+import br.com.fuctura.listeners.EnderecoListener;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "endereco")
+@EntityListeners(EnderecoListener.class)
 public class Endereco {
-   
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
 	private String cep;
 	private String logradouro;
@@ -61,5 +69,11 @@ public class Endereco {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
+    }
+
+    @Override
+    public String toString() {
+        return "Endereco [codigo=" + codigo + ", cep=" + cep + ", logradouro=" + logradouro + ", complemento="
+                + complemento + ", numero=" + numero + "]";
     }
 }

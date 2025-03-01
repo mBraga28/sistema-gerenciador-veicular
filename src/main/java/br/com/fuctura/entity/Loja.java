@@ -3,7 +3,14 @@ package br.com.fuctura.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -12,14 +19,27 @@ import jakarta.persistence.Table;
 @Table(name = "loja")
 public class Loja {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
 	private String nome;
 
-	@OneToOne
+	@OneToOne(cascade  = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "endereco_loja",
+	joinColumns = @JoinColumn(name = "codigo_endereco"),
+			inverseJoinColumns = @JoinColumn(name = "codigo_loja")
+			)
 	private Endereco endereco;
 
 	@OneToMany
+	@JoinTable(name = "loja_veiculo",
+			joinColumns = @JoinColumn(name = "codigo_loja"),
+			inverseJoinColumns = @JoinColumn(name = "codigo_veiculo")
+			)
 	private List<Veiculo> veiculos;
+
+	@OneToMany(mappedBy = "codLoja")
+	private List<Venda> vendas = new ArrayList<>();
 	
 	public Loja() {
 		this.veiculos = new ArrayList<Veiculo>();
@@ -29,7 +49,6 @@ public class Loja {
 		super();
 		this.nome = nome;
 		this.endereco = endereco;
-		this.veiculos = new ArrayList<Veiculo>();
 	}
 
 	public Integer getCodigo() {
@@ -62,6 +81,19 @@ public class Loja {
 
 	public void add(Veiculo veiculo) {
 		this.veiculos.add(veiculo);
+	}
+
+	public List<Venda> getVendas() {
+		return vendas;
+	}
+
+	public void add(Venda venda) {
+		this.vendas.add(venda);
+	}
+
+	@Override
+	public String toString() {
+		return "Loja [codigo=" + codigo + ", nome=" + nome + "]";
 	}
 
 }

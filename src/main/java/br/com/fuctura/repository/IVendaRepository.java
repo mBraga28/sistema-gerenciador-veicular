@@ -11,6 +11,8 @@ public interface IVendaRepository {
 
     Venda save(Connection connection,Venda venda) throws SQLException;
     Optional<List<Venda>> findAll(Connection connection) throws SQLException;
-    Optional<Venda> findById(Connection connection, Integer codigo) throws SQLException;    
+    Optional<Venda> findById(Connection connection, Integer codigo) throws SQLException;
+    Venda update(Connection connection, Venda venda) throws SQLException;
+    Venda delete(Connection connection, Venda venda) throws SQLException;    
 
 }

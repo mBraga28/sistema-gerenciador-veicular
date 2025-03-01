@@ -75,6 +75,36 @@ public class VendaDAO {
         
         return Optional.empty();
     }
+    
+    public Venda update(Connection connection, Venda venda) throws SQLException {
+        String comandoSQL = "update venda set cod_cliente = ?, cod_veiculo = ?, cod_vendedor = ?, cod_loja = ?, valor = ?, dh_venda = ? where codigo = ?";
+        
+        PreparedStatement ps = connection.prepareStatement(comandoSQL);
+        
+        ps.setObject(1, venda.getCliente().getCodigo());
+        ps.setObject(2, venda.getVeiculo().getCodigo());
+        ps.setObject(3, venda.getVendedor().getCodigo());
+        ps.setObject(4, venda.getLoja().getCodigo());
+        ps.setDouble(5, venda.getValor());
+        ps.setObject(6, venda.getDhVenda());
+        ps.setInt(7, venda.getCodigo());
+        
+        ps.execute();
+        
+        return venda;
+    }
+
+    public Venda delete(Connection connection, Venda venda) throws SQLException {
+        String comandoSQL = "delete from venda where codigo = ?";
+        
+        PreparedStatement ps = connection.prepareStatement(comandoSQL);
+        
+        ps.setInt(1, venda.getCodigo());
+        
+        ps.execute();
+        
+        return venda;
+    }
 
     private Venda extracted(ResultSet rs) throws SQLException {
         int cod = rs.getInt("codigo");

@@ -1,12 +1,30 @@
 package br.com.fuctura.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "cliente")
 public class Cliente {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
     private String nome;
     private String cpf;
     private String celular;
 
+    @OneToOne  // Specify the relationship
+    @JoinTable(name = "endereco_cliente",  // Define the join table
+            joinColumns = @JoinColumn(name = "codigo_endereco"),  // Define the join column
+            inverseJoinColumns = @JoinColumn(name = "codigo_cliente")  // Define the inverse join column
+    )
     private Endereco endereco;
 
     public Cliente() {
@@ -61,4 +79,9 @@ public class Cliente {
         this.endereco = endereco;
     }
 
+    @Override
+    public String toString() {
+        return "Cliente [codigo=" + codigo + ", nome=" + nome + ", cpf=" + cpf + ", celular=" + celular + ", endereco="
+                + endereco + "]";
+    }
 }

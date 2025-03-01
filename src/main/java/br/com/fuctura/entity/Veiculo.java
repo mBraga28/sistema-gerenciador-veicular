@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -23,8 +24,13 @@ public class Veiculo {
 
 	// relação de 1 para muitos com a tabela tipo
 	@ManyToOne
-	@JoinColumn(name = "codigo_tipo")
+	@JoinTable( name = "veiculo_tipo", 
+			joinColumns = @JoinColumn(name = "codigo_veiculo"),
+			inverseJoinColumns = @JoinColumn(name = "codigo_tipo"))
 	private Tipo tipo; 
+
+	@ManyToOne
+	private Loja loja;
 	
 	
 	public Veiculo(String placa, String modelo, int ano, double valor, Tipo tipo) {
@@ -34,6 +40,16 @@ public class Veiculo {
 		this.ano = ano;
 		this.valor = valor;
 		this.tipo = tipo;
+	}
+
+	public Veiculo(String placa, String modelo, int ano, double valor, Tipo tipo, Loja loja) {
+		super();
+		this.placa = placa;
+		this.modelo = modelo;
+		this.ano = ano;
+		this.valor = valor;
+		this.tipo = tipo;
+		this.loja = loja;
 	}
 	
 	public Veiculo() {}
@@ -78,8 +94,20 @@ public class Veiculo {
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
-	
-	//Getters&Setter;
+
+	public Loja getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Loja loja) {
+		this.loja = loja;
+	}
+
+	@Override
+	public String toString() {
+		return "Veiculo [codigo=" + codigo + ", placa=" + placa + ", modelo=" + modelo + ", ano=" + ano + ", valor="
+				+ valor + ", tipo=" + tipo + ", loja=" + loja  + "]";
+	}
 	
 	
 }

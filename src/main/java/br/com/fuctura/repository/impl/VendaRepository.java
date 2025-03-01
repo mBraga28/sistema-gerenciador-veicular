@@ -32,6 +32,14 @@ public class VendaRepository implements IVendaRepository {
         return vendaDAO.findById(connection, codigo);
     }
 
-    
+    @Override
+    public Venda update(Connection connection, Venda venda) throws SQLException {
+        return vendaDAO.update(connection, venda);
+    }   
+
+    @Override
+    public Venda delete(Connection connection, Venda venda) throws SQLException {
+        return vendaDAO.delete(connection, venda);
+    }
 
 }

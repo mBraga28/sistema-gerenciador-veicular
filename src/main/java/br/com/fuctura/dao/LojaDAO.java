@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import br.com.fuctura.entity.Loja;
@@ -32,6 +34,23 @@ public class LojaDAO {
 
     }
 
+	public Optional<List<Loja>> findAll(Connection connection) throws SQLException {
+		String comandoSQL = "select * from loja";
+
+		PreparedStatement ps = connection.prepareStatement(comandoSQL);
+
+		ResultSet rs = ps.executeQuery();
+
+		List<Loja> lista = new ArrayList<Loja>();
+
+		while (rs.next()) {
+			Loja l = extracted(rs);
+			lista.add(l);
+		}
+
+		return Optional.empty();
+	}
+
     public Optional<Loja> findById(Connection connection, Integer codigo) throws SQLException{
 		String comandoSQL = "select "
 				+ "l.nome, v.placa, v.ano, v.valor "
@@ -50,9 +69,10 @@ public class LojaDAO {
 		
 		ResultSet rs = pst.executeQuery();
 		
-		Loja l = new Loja();
-		
 		while(rs.next()) {
+
+			Loja l = extracted(rs);
+
 			String nomeLoja = rs.getString("nome");
 			String placaVeiculo = rs.getString("placa");
 			Double valorVeiculo = rs.getDouble("valor");
@@ -64,9 +84,59 @@ public class LojaDAO {
 			l.setNome(nomeLoja);
 			
 			l.add(v);
+			return Optional.of(l);
 		}
 		
-		return Optional.of(l);
+		return Optional.empty();
+	}
+
+	public Optional<Loja> findByNome(Connection connection, String nome) throws SQLException {
+		String comandoSQL = "select * from loja where nome = ?";
+
+		PreparedStatement ps = connection.prepareStatement(comandoSQL);
+		ps.setString(1, nome);
+
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			Loja l = extracted(rs);
+			return Optional.of(l);
+		}
+
+		return Optional.empty();
+	}
+
+	public Loja update(Connection connection, Loja loja) throws SQLException {
+		String comandoSQL = "UPDATE loja SET nome = ?, endereco = ? WHERE codigo = ?";
+
+		PreparedStatement ps = connection.prepareStatement(comandoSQL);
+
+		ps.setString(1, loja.getNome());
+		ps.setObject(2, loja.getEndereco().getCep());
+		ps.setInt(3, loja.getCodigo());
+
+		ps.execute();
+
+		return loja;
+	}
+
+	public Loja delete(Connection connection, Loja loja) throws SQLException {
+		String comandoSQL = "DELETE FROM loja WHERE codigo = ?";
+
+		PreparedStatement ps = connection.prepareStatement(comandoSQL);
+
+		ps.setInt(1, loja.getCodigo());
+
+		ps.execute();
+
+		return loja;
+	}
+
+	private Loja extracted(ResultSet rs) throws SQLException {
+		Loja l = new Loja();
+		l.setCodigo(rs.getInt("codigo"));
+		l.setNome(rs.getString("nome"));
+		return l;
 	}
 
 }
